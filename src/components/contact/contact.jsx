@@ -1,64 +1,126 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./contact.css";
 
 const Contact = () => {
-  const [fastName, setfastName] = useState("")
-  const [lastName, setlastName] = useState("")
-  const [userEmail, setUserEmail] = useState("")
-  const [userPassword, setUserPassword] = useState("")
-  const [userConfirmPassword, setUserConfirmPassword] = useState("")
-  
+
+  const [userDetails, setUserDetails] = useState({ firstName: "", LastName: "", email: "", Password: "", ConfirmPassword: "" });
+  console.log(userDetails);
+
+
+  const [userErr, setUserErr] = useState({ firstNameErr: false, LastNameErr: false, emailErr: false, PasswordErr: false, ConfirmPasswordErr: false });
+  console.log(userDetails);
+
   const SignIn = (e) => {
     e.preventDefault();
-    console.log(fastName,lastName,userEmail,userPassword,userConfirmPassword);
-    
-  };
+    if (userDetails.firstName === "" && userDetails.LastName === "" && userDetails.email === "" && userDetails.Password === "" && userDetails.ConfirmPassword === "") {
+      setUserErr({ firstNameErr: true, LastNameErr: true, emailErr: true, PasswordErr: true, ConfirmPasswordErr: true, })
+    }else
+    {
+
+      setUserDetails({ firstName: "", LastName: "", email: "", Password: "", ConfirmPassword: "" });
+    }
+  }
+
+
+
+
+
+  useEffect(() => {
+    if (userDetails.firstName !== "") {
+      setUserErr({ ...userErr, firstNameErr: false })
+    }
+    if (userDetails.LastName !== "") {
+      setUserErr({ ...userErr, LastNameErr: false })
+    }
+    if (userDetails.email !== "") {
+      setUserErr({ ...userErr, emailErr: false })
+    }
+    if (userDetails.Password !== "") {
+      setUserErr({ ...userErr, PasswordErr: false })
+    }
+    if (userDetails.ConfirmPassword !== "") {
+      setUserErr({ ...userErr, ConfirmPasswordErr: false })
+    }
+
+  }, [userDetails]);
+
+
 
   return (
     <div className="">
       <main className="form-signin w-100 m-auto mt-3">
         <form onSubmit={SignIn} className="mt-5">
           <h1 className="h3 mb-3 fw-bold text-center"> Sign in</h1>
+
           <div className="form-floating mt-3">
-            <input type="text" className="form-control"
-             placeholder="First Name"
-              value={fastName} onChange={(e)=> {setfastName(e.target.value);
-             }}/>
-            <label >First Name</label>
+            <input type="text"
+              style={{ border: userErr.firstNameErr && "2px solid red", }}
+              className="form-control"
+              placeholder="First Name" name="FirstName"
+              onChange={(e) => {
+                setUserDetails({ ...userDetails, firstName: e.target.value })
+
+              }} />
+            {userErr.firstNameErr && (
+              <span className="text-danger">First Name</span>
+            )}
           </div>
 
           <div className="form-floating mt-3">
-            <input type="text" className="form-control" 
-            placeholder="Last Name " value={lastName} 
-            onChange={(e)=>setlastName(e.target.value)}/>
-            <label >Last Name</label>
+            <input type="text"
+              style={{ border: userErr.LastNameErr && "2px solid red", }}
+              className="form-control"
+              placeholder="Last Name" name="LastName"
+              onChange={(e) => {
+                setUserDetails({ ...userDetails, LastName: e.target.value })
+              }} />
+            {userErr.LastNameErr && (
+              <span className="text-danger"> Last Name</span>
+            )}
           </div>
 
           <div className="form-floating mt-3">
             <input type="email"
-             className="form-control" placeholder="Enter Your Email"
-             value={userEmail} 
-              onChange={(e)=>setUserEmail(e.target.value)} />
-            <label >Enter Your Email</label>
+
+              style={{ border: userErr.emailErr && "2px solid red", }}
+              className="form-control" name="email"
+
+              onChange={(e) => {
+                setUserDetails({ ...userDetails, email: e.target.value })
+              }} />
+            {userErr.emailErr && (
+              <span className="text-danger">Enter Your Email</span>
+            )}
+
           </div>
 
           <div className="form-floating mt-3">
             <input
               type="password"
-              className="form-control"  placeholder="Password"
-               value={userPassword} 
-              onChange={(e)=>setUserPassword(e.target.value)} />
-            <label >Password</label>
-            
+              style={{ border: userErr.PasswordErr && "2px solid red", }}
+              className="form-control" placeholder="Password" name="Password"
+
+              onChange={(e) => {
+                setUserDetails({ ...userDetails, Password: e.target.value })
+              }} />
+            {userErr.PasswordErr && (
+              <span className="text-danger">Password</span>
+            )}
+
           </div>
 
           <div className="form-floating mt-3">
             <input
               type="password"
-              className="form-control "  
-              placeholder="Confirm Password" value={userConfirmPassword} 
-              onChange={(e)=>setUserConfirmPassword(e.target.value)} />
-            <label>Confirm Password</label>
+              style={{ border: userErr.ConfirmPasswordErr && "2px solid red", }}
+              className="form-control "
+              placeholder="Confirm Password" name="ConfirmPassword"
+              onChange={(e) => {
+                setUserDetails({ ...userDetails, ConfirmPassword: e.target.value })
+              }} />
+            {userErr.ConfirmPasswordErr && (
+              <span className="text-danger">Confirm Password</span>
+            )}
           </div>
 
           <div className="form-check text-start my-3">
